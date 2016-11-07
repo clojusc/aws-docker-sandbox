@@ -1,1 +1,1 @@
-{:externs ["chemtrack/externs/express-ws.js"]}
+{:externs ["sandbox/externs/express-ws.js"]}

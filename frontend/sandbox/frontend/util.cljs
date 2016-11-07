@@ -1,4 +1,4 @@
-(ns chemtrack.frontend.util)
+(ns sandbox.frontend.util)
 
 (defn relative-ws-url [& [segment]]
   (let [loc (comp not-empty

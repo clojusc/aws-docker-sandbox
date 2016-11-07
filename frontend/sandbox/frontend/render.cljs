@@ -1,5 +1,5 @@
-(ns chemtrack.frontend.render
-  (:require [chemtrack.frontend.template :as t]
+(ns sandbox.frontend.render
+  (:require [sandbox.frontend.template :as t]
             [cljs.core.async :as async]
             [clojure.string :as str]
             [cljsjs.moment]))

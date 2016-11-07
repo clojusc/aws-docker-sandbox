@@ -1,10 +1,10 @@
-(ns chemtrack.frontend
+(ns sandbox.frontend
   (:require [reagent.core :as reagent]
             [cljs.core.async :as async :refer [<! >!]]
             [chord.client :as chord]
             [reagent-forms.core :as reagent-forms]
-            [chemtrack.frontend.render :as render]
-            [chemtrack.frontend.util :as util])
+            [sandbox.frontend.render :as render]
+            [sandbox.frontend.util :as util])
   (:require-macros [cljs.core.async.macros :refer [go]]))
 
 (enable-console-print!)

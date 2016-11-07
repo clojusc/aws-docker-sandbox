@@ -1,4 +1,4 @@
-(ns chemtrack.lambda
+(ns sandbox.lambda
   (:require [cljs-lambda.util :refer [async-lambda-fn]]
             [cljs.core.async :as async :refer [<!]]
             [fink-nottle.sns :as sns]

@@ -7,7 +7,7 @@
 
 *Clojure(script) App for Sandboxing Docker on AWS*
 
-[![Project Logo][logo-large]][logo]
+[![Project Logo][logo]][logo-large]
 
 
 #### Contents

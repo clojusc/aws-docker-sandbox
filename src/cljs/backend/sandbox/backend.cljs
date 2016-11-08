@@ -74,13 +74,14 @@
                   :sightings-in (async/chan)
                   :recent (atom #queue [])}
         app (express)
-        server (make-server app)]
-
+        server (make-server app)
+        creds (merge (eulalie.creds/env) {:region "us-west-2"})]
+    (println (str "Using creds: " creds))
     (register-routes app channels)
     (connect-channels!
      {:port port
       :topic-name "chemtrail-sightings"
-      :creds (eulalie.creds/env)
+      :creds creds
       :max-recent 10}
      channels)
     (.listen server port)))

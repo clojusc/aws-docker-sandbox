@@ -20,6 +20,7 @@
      :condition {:arn-equals {:aws/source-arn topic-arn}}}]})
 
 (defn create-queue! [creds queue-name]
+  (println (str "Using creds: " creds))
   (go
     (let [queue-url (<! (sqs/create-queue! creds queue-name))
           queue-arn (<! (sqs/queue-arn! creds queue-url))]
@@ -28,6 +29,9 @@
        :queue-arn queue-arn})))
 
 (defn subscribe-queue! [creds {:keys [queue-url queue-arn]} topic-arn]
+  (println (str "Using creds: " creds))
+  (println (str "Using queue-url: " queue-url))
+  (println (str "Using queue-arn: " queue-arn))
   (go
     (<! (sqs/set-queue-attribute!
           creds queue-url :policy
@@ -41,9 +45,10 @@
   (async-lambda-fn
    (fn [{:keys [topic-name queue-name]} context]
      (go
-       (let [creds (eulalie.creds/env)
+       (let [creds (merge (eulalie.creds/env) {:region "us-west-2"})
              topic-arn (<! (sns/create-topic! creds topic-name))
              {:keys [queue-url queue-arn] :as queue}
              (<! (create-queue! creds queue-name))]
+         (println (str "Using creds: " creds))
          (<! (subscribe-queue! creds queue topic-arn))
          {:topic-id topic-arn :queue-id queue-url})))))

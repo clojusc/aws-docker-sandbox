@@ -30,17 +30,19 @@ It takes advantage of AWS infrastructure and services in order to massively
 reduce the spin-up time for researches that would otherwise have to provide
 these themselves, thus allowing them to get to the science immediately.
 
-Initial code was based on work done at [Nervous.io][nervous] by
-[Moe Aboulkheir][moe]. (See the related [blog post][orig blog post].)
+The initial architecture (and code) was based on work done at
+[Nervous.io][nervous] by [Moe Aboulkheir][moe]. (See the related
+[blog post][orig blog post].)
 
 
 ## AWS Services [&#x219F;](#contents)
 
-This application makes use of the following Amazon Web Services:
+This application makes (or will make) use of the following Amazon Web Services:
 
 * [EC2][ec2]
 * [ECS][ecs] / [ECR][ecr]
 * [SQS][sqs]
+* [SNS][sns]
 * [Lambda][lambda]
 
 
@@ -121,6 +123,7 @@ Apache License, Version 2.0.
 [ecs]: http://docs.aws.amazon.com/AmazonECS/latest/developerguide/Welcome.html
 [ecr]: http://docs.aws.amazon.com/AmazonECR/latest/userguide/Registries.html
 [sqs]: http://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/Welcome.html
+[sns]: http://docs.aws.amazon.com/sns/latest/dg/welcome.html
 [lambda]: https://docs.aws.amazon.com/lambda/latest/dg/welcome.html
 [aws cli]: https://aws.amazon.com/cli/
 [queue naming code]: https://github.com/nervous-systems/chemtrack-example/blob/master/backend/chemtrack/backend/util.cljs#L23

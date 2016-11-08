@@ -61,6 +61,7 @@ Export the following values:
 ```
 $ export AWS_ACCESS_KEY_ID=yourawsaccesskey
 $ export AWS_SECRET_ACCESS_KEY=yourawssecretkey
+$ export AWS_DEFAULT_REGION=yourpreferredregion
 ```
 
 Then in `project.clj` under the `cljs-lambda` section:

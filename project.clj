@@ -36,8 +36,7 @@
   :cljs-lambda
     {:cljs-build-id "lambda"
      :defaults
-       {:role "arn:aws:iam::715812439605:role/lambda-test"
-        :region "us-west-2"}
+       {:role "arn:aws:iam::715812439605:role/lambda-test"}
      :functions [
        {:name "topic-to-queue"
         :invoke sandbox.lambda/topic-to-queue

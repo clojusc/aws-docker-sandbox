@@ -15,7 +15,10 @@
 * [About](#about-)
 * [AWS Services](#aws-services-)
 * [Dependencies](#dependencies-)
-* [Setup](#setup-)
+* [Usage](#usage-)
+  * [Setup](#setup-)
+  * [Deploy](#deploy-)
+  * [Run](#run-)
 * [License](#license-)
 
 
@@ -42,22 +45,54 @@ This application makes use of the following Amazon Web Services:
 
 
 ## Dependencies [&#x219F;](#contents)
-  - NPM
+  - `npm`
   - [AWS CLI][aws cli]
   - EC2 (The queue naming code retrieves instance metadata.
    [Easy enough to change][queue naming code])
 
 
-## Setup [&#x219F;](#contents)
+## Usage [&#x219F;](#contents)
 
-Steps:
- - `lein deps`
- - [Insert valid IAM role name in `project.clj`][cljs-lambda]
-   (`lein cljs-lambda default-iam-role` will allow deployment,
-   but SNS & SQS permissions must be added for execution)
- - `lein cljs-lambda deploy`
- - `lein cljsbuild once`
- - `node target/backend/chemtrack.js`
+
+### Setup [&#x219F;](#contents)
+
+Export the following values:
+
+```
+$ export AWS_ACCESS_KEY_ID=yourawsaccesskey
+$ export AWS_SECRET_ACCESS_KEY=yourawssecretkey
+```
+
+Then in `project.clj` under the `cljs-lambda` section:
+
+* Update the [IAM role name in `project.clj`][cljs-lambda] with a valid value.
+  Note that SNS & SQS permissions must be added to enable execution
+* Update the region
+
+Then get all the deps:
+
+```
+$ lein deps
+```
+
+
+### Deploy [&#x219F;](#contents)
+
+Deploy your function to AWS Lambda:
+
+```
+$ lein cljs-lambda deploy
+```
+
+
+### Run [&#x219F;](#contents)
+
+Then to run, build the backend and execute it:
+
+```
+$ lein cljsbuild once
+$ node target/backend/chemtrack.js
+```
 
 
 ## License [&#x219F;](#contents)
@@ -67,7 +102,6 @@ Copyright © 2015, Nervous.io
 Copyright © 2016, Clojure-Aided Enrichment Center
 
 Copyright © 2016, Element 84, Inc.
-
 
 Apache License, Version 2.0.
 

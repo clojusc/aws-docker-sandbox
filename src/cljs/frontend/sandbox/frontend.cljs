@@ -24,8 +24,8 @@
   (go
     (let [{sightings-in :ws-channel}
           (<! (chord/ws-ch
-               (util/relative-ws-url "sightings")
-               {:write-ch sightings-out}))]
+                (util/relative-ws-url "sightings")
+                {:write-ch sightings-out}))]
       (loop []
         (when-let [{sighting :message} (<! sightings-in)]
           (swap! recent util/conj+evict sighting max-items)
@@ -33,18 +33,18 @@
 
 (defn mount-root []
   (let [sightings-out (async/chan)
-        recent        (reagent/atom recent-container)]
+        recent (reagent/atom recent-container)]
     (ws-loop! recent sightings-out)
     (reagent/render
-     [render/app
-      bind-form
-      {:sightings-out sightings-out
-       :elements {:ag "Aluminum"
-                  :ba "Barium"
-                  :th "Thorium"
-                  :si "Silicon Carbide"
-                  :sr "Strontium"}
-       :recent recent}]
-     (.getElementById js/document "app"))))
+      [render/app
+       bind-form
+       {:sightings-out sightings-out
+        :elements {:ag "Aluminum"
+                   :ba "Barium"
+                   :th "Thorium"
+                   :si "Silicon Carbide"
+                   :sr "Strontium"}
+        :recent recent}]
+      (.getElementById js/document "app"))))
 
 (mount-root)

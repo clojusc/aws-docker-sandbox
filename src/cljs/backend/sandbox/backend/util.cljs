@@ -21,21 +21,25 @@
       (str/join "_" [region instance-id port]))))
 
 (defn topic-to-queue! [{:keys [topic-name creds] :as config}]
+  (println (str "topic-name: " topic-name))
+  (println (str "creds: " creds))
+  (println (str "config: " config))
   (go
     (let [queue-name (<! (queue-name! config))]
       (-> (lambda/request!
-           creds :topic-to-queue
-           {:topic-name topic-name
-            :queue-name queue-name})
+            creds
+            :topic-to-queue {
+              :topic-name topic-name
+              :queue-name queue-name})
           <!
           second))))
 
 (defn channel-websocket! [ws to-client from-client]
   (.on ws "message" (fn [m _]
                       (async/put! from-client m)))
-  (.on ws "close"   (fn []
-                      (async/close! from-client)
-                      (async/close! to-client)))
+  (.on ws "close" (fn []
+                    (async/close! from-client)
+                    (async/close! to-client)))
   (go
     (loop []
       (when-let [value (<! to-client)]

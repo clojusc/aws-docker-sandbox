@@ -30,12 +30,12 @@
 (defn subscribe-queue! [creds {:keys [queue-url queue-arn]} topic-arn]
   (go
     (<! (sqs/set-queue-attribute!
-         creds queue-url :policy
-         (sns-bridge-policy topic-arn queue-arn)))
+          creds queue-url :policy
+          (sns-bridge-policy topic-arn queue-arn)))
     (let [subs-arn
           (<! (sns/subscribe! creds topic-arn :sqs queue-arn))]
       (<! (sns/set-subscription-attribute!
-           creds subs-arn :raw-message-delivery true)))))
+            creds subs-arn :raw-message-delivery true)))))
 
 (def ^:export topic-to-queue
   (async-lambda-fn

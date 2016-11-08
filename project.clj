@@ -45,15 +45,15 @@
   :cljsbuild
     {:builds [
       {:id "backend"
-       :source-paths ["backend"]
+       :source-paths ["src/cljs/backend"]
        :compiler {
-         :output-to "target/backend/chemtrack.js"
-         :output-dir "target/backend"
+         :output-to "target/cljs/backend/chemtrack.js"
+         :output-dir "target/cljs/backend"
          :optimizations :none
          :main "sandbox.backend"
          :target :nodejs}}
       {:id "frontend"
-       :source-paths ["frontend"]
+       :source-paths ["src/cljs/frontend"]
        :figwheel true
        :compiler {
          :asset-path "js/out"
@@ -61,15 +61,18 @@
          :output-dir "resources/public/js/out"
          :optimizations :advanced}}
       {:id "lambda"
-       :source-paths ["lambda"]
+       :source-paths ["src/cljs/lambda"]
        :compiler
-         {:output-to "target/lambda/chemtrack.js"
-          :output-dir "target/lambda"
+         {:output-to "target/cljs/lambda/chemtrack.js"
+          :output-dir "target/cljs/lambda"
           :optimizations :advanced
           :target :nodejs}}]}
   :profiles
     {:dev
-      {:source-paths ["frontend" "backend" "lambda"]
+      {:source-paths [
+        "src/cljs/frontend"
+        "src/cljs/backend"
+        "src/cljs/lambda"]
        :repl-options
          {:nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}
           :dependencies

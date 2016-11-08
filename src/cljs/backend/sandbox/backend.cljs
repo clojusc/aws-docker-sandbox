@@ -10,7 +10,7 @@
 
 (nodejs/enable-util-print!)
 
-(defonce http    (nodejs/require "http"))
+(defonce http (nodejs/require "http"))
 (defonce express (nodejs/require "express"))
 (defonce express-ws (nodejs/require "express-ws"))
 
@@ -40,20 +40,19 @@
       (sns-push-loop! creds topic-id sightings-in)
       (let [{deletes :in-chan} (sqs/batching-deletes creds queue-id)]
         (async/pipeline-async
-         1
-         sightings-out
-         (partial sqs-incoming! {:deletes deletes
-                                 :max-recent recent
-                                 :recent recent})
-         (sqs/receive! creds queue-id))))))
+          1
+          sightings-out
+          (partial sqs-incoming! {:deletes deletes
+                                  :max-recent recent
+                                  :recent recent})
+          (sqs/receive! creds queue-id))))))
 
 (defn make-sightings-handler [{:keys [sightings-out sightings-in recent]}]
   (let [sightings-out* (async/mult sightings-out)]
     (fn [websocket _]
       (let [from-client (async/chan 1 (map util/sighting-in))
-            to-client   (async/chan 1 (map util/sighting-out))]
-        (util/channel-websocket!
-         websocket to-client from-client)
+            to-client (async/chan 1 (map util/sighting-out))]
+        (util/channel-websocket! websocket to-client from-client)
         (async/pipe from-client sightings-in false)
         (go
           (<! (async/onto-chan to-client @recent false))
@@ -62,7 +61,7 @@
 (defn register-routes [app channels]
   (doto app
     (.use (.static express "resources/public"))
-    (.ws  "/sightings" (make-sightings-handler channels))))
+    (.ws "/sightings" (make-sightings-handler channels))))
 
 (defn make-server [app]
   (let [server (.createServer http app)]
@@ -72,10 +71,10 @@
 (defn -main [& [{:keys [port]
                  :or {port (or (aget js/process "env" "PORT") 8080)}}]]
   (let [channels {:sightings-out (async/chan)
-                  :sightings-in  (async/chan)
-                  :recent        (atom #queue [])}
-        app      (express)
-        server   (make-server app)]
+                  :sightings-in (async/chan)
+                  :recent (atom #queue [])}
+        app (express)
+        server (make-server app)]
 
     (register-routes app channels)
     (connect-channels!

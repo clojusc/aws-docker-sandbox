@@ -47,10 +47,11 @@ This application makes (or will make) use of the following Amazon Web Services:
 
 
 ## Dependencies [&#x219F;](#contents)
-  - `npm`
-  - [AWS CLI][aws cli]
-  - EC2 (The queue naming code retrieves instance metadata.
-   [Easy enough to change][queue naming code])
+
+ * Java
+ * `lein`
+ * [AWS CLI][aws cli]
+ * `npm`
 
 
 ## Usage [&#x219F;](#contents)

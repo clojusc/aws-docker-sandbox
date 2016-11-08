@@ -25,9 +25,9 @@
        [express-ws "0.2.6"]]}
   :resource-paths ["resources"]
   :clean-targets ^{:protect false}
-  ["resources/public/js/out"
-   "resources/public/js/chemtrack.js"
-   "target"]
+    ["resources/public/js/out"
+     "resources/public/js/chemtrack.js"
+     "target"]
   :plugins
     [[lein-cljsbuild "1.1.4"]
      [lein-npm "0.6.2"]
@@ -35,7 +35,9 @@
   :figwheel {:open-file-command "emacsclient"}
   :cljs-lambda
     {:cljs-build-id "lambda"
-     :defaults {:role "arn:aws:iam::510355070671:role/permissive-lambda"}
+     :defaults
+       {:role "arn:aws:iam::715812439605:role/lambda-test"
+        :region "us-west-2"}
      :functions [
        {:name "topic-to-queue"
         :invoke sandbox.lambda/topic-to-queue

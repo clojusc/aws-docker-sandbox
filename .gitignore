@@ -11,3 +11,5 @@ pom.xml.asc
 .lein-failures
 .nrepl-port
 /non-packaged-resources/
+/node_modules/
+/resources/public/js/

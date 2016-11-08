@@ -66,6 +66,9 @@ Copyright © 2015, Nervous.io
 
 Copyright © 2016, Clojure-Aided Enrichment Center
 
+Copyright © 2016, Element 84, Inc.
+
+
 Apache License, Version 2.0.
 
 

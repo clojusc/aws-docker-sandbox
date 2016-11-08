@@ -69,19 +69,13 @@ Then in `project.clj` under the `cljs-lambda` section:
   Note that SNS & SQS permissions must be added to enable execution
 * Update the region
 
-Then get all the deps:
-
-```
-$ lein deps
-```
-
 
 ### Deploy [&#x219F;](#contents)
 
 Deploy your function to AWS Lambda:
 
 ```
-$ lein cljs-lambda deploy
+$ make lambda-deploy
 ```
 
 
@@ -90,8 +84,8 @@ $ lein cljs-lambda deploy
 Then to run, build the backend and execute it:
 
 ```
-$ lein cljsbuild once
-$ node target/backend/chemtrack.js
+$ make
+$ make run
 ```
 
 

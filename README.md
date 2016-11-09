@@ -13,8 +13,10 @@
 #### Contents
 
 * [About](#about-)
-* [AWS Services](#aws-services-)
 * [Dependencies](#dependencies-)
+  * [Languages](#languages-)
+  * [Tools](#tools-)
+  * [AWS Services](#aws-services-)
 * [Usage](#usage-)
   * [Setup](#setup-)
   * [Deploy](#deploy-)
@@ -35,7 +37,23 @@ The initial architecture (and code) was based on work done at
 [blog post][orig blog post].)
 
 
-## AWS Services [&#x219F;](#contents)
+## Dependencies [&#x219F;](#contents)
+
+
+### Languages [&#x219F;](#contents)
+
+ * Java (for Clojure)
+ * JavaScript (for Clojurescript)
+
+
+### Tools [&#x219F;](#contents)
+
+ * `lein`
+ * `npm`
+ * [AWS CLI][aws cli]
+
+
+### AWS Services [&#x219F;](#contents)
 
 This application makes (or will make) use of the following Amazon Web Services:
 
@@ -44,14 +62,6 @@ This application makes (or will make) use of the following Amazon Web Services:
 * [SQS][sqs]
 * [SNS][sns]
 * [Lambda][lambda]
-
-
-## Dependencies [&#x219F;](#contents)
-
- * Java
- * `lein`
- * [AWS CLI][aws cli]
- * `npm`
 
 
 ## Usage [&#x219F;](#contents)

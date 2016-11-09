@@ -77,11 +77,9 @@ $ export AWS_SECRET_ACCESS_KEY=yourawssecretkey
 $ export AWS_DEFAULT_REGION=yourpreferredregion
 ```
 
-Then in `project.clj` under the `cljs-lambda` section:
-
-* Update the [IAM role name in `project.clj`][cljs-lambda] with a valid value.
-  Note that SNS & SQS permissions must be added to enable execution
-* Update the region
+Then in `project.clj` under the `cljs-lambda` section, update the
+[IAM role name][cljs-lambda] with a valid value. Note that SNS & SQS
+permissions must be added to enable execution
 
 
 ### Deploy [&#x219F;](#contents)

@@ -16,8 +16,10 @@
      [io.nervous/cljs-lambda "0.3.2"]
      [io.nervous/cljs-nodejs-externs "0.2.0"]
      [jarohen/chord "0.7.0"]
+     [com.taoensso/timbre "4.7.4"]
      [cljsjs/moment "2.15.2-2"]]
   :exclusions [[org.clojure/clojure]]
+  :source-paths ["src/cljc"]
   :npm
     {:dependencies
       [[source-map-support "0.2.8"]
@@ -32,7 +34,6 @@
     [[lein-cljsbuild "1.1.4"]
      [lein-npm "0.6.2"]
      [io.nervous/lein-cljs-lambda "0.6.2"]]
-  :figwheel {:open-file-command "emacsclient"}
   :cljs-lambda
     {:cljs-build-id "lambda"
      :defaults
@@ -69,11 +70,11 @@
   :profiles
     {:dev
       {:source-paths [
-        "src/cljs/frontend"
-        "src/cljs/backend"
-        "src/cljs/lambda"]
+         "src/cljs/frontend"
+         "src/cljs/backend"
+         "src/cljs/lambda"]
        :repl-options
-         {:nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}
+        {:nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}
           :dependencies
             [[com.cemerick/piggieback "0.2.1"]
              [org.clojure/tools.nrepl "0.2.12"]]}})

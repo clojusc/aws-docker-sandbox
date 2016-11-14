@@ -5,7 +5,9 @@
             [eulalie.creds]
             [fink-nottle.sns :as sns]
             [fink-nottle.sqs.channeled :as sqs]
-            [sandbox.backend.util :as util])
+            [sandbox.backend.util :as util]
+            [sandbox.creds]
+            [taoensso.timbre :as log])
   (:require-macros [cljs.core.async.macros :refer [go]]))
 
 (nodejs/enable-util-print!)
@@ -23,8 +25,9 @@
 
 (defn sqs-incoming!
   [{:keys [max-recent recent deletes]}
-   {:keys [body] :as message}
-   results]
+   {:keys [body] :as message} results]
+  (when-not body
+    (log/error "Body undefined; got message:" message))
   (let [body (read-string body)]
     (swap! recent util/conj+evict body max-recent)
     (go
@@ -68,15 +71,21 @@
     (express-ws app server)
     server))
 
+(defn get-port [default]
+  (or (aget js/process "env" "PORT") default))
+
 (defn -main [& [{:keys [port]
-                 :or {port (or (aget js/process "env" "PORT") 8080)}}]]
+                 :or {port (get-port 8080)}}]]
+  ;; XXX set log level better later ... maybe integrate timbre into twig?
+  (log/set-level! :debug)
   (let [channels {:sightings-out (async/chan)
                   :sightings-in (async/chan)
                   :recent (atom #queue [])}
         app (express)
         server (make-server app)
-        creds (merge (eulalie.creds/env) {:region "us-west-2"})]
-    (println (str "Using creds: " creds))
+        ;creds (sandbox.creds/load)
+        creds (eulalie.creds/env)]
+    (log/debug (str "Using creds: " creds))
     (register-routes app channels)
     (connect-channels!
      {:port port

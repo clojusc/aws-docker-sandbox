@@ -1,37 +1,45 @@
 (ns sandbox.backend.util
-  (:require [cljs.core.async :as async :refer [<!]]
+  (:require [cljs.core.async :as async]
+            [cljs.reader]
+            [clojure.string :as string]
             [eulalie.instance-data :as instance-data]
             [eulalie.lambda.util :as lambda]
-            [cljs.reader]
-            [clojure.string :as str])
+            [taoensso.timbre :as log])
   (:require-macros [cljs.core.async.macros :refer [go]]))
 
+(defn now []
+  (.getTime (js/Date.)))
+
 (defn sighting-in [msg]
-  (-> msg
-      cljs.reader/read-string
-      (assoc :timestamp (.getTime (js/Date.)))))
+  (if (string? msg)
+    (-> msg
+        cljs.reader/read-string
+        (assoc :timestamp (now)))
+    (do
+      (log/errorf "Can't get sighting data from non-string message: %s" msg)
+      {})))
 
 (def sighting-out pr-str)
 
 (defn queue-name! [{:keys [port]}]
   (go
     (let [{:keys [instance-id region]}
-          (<! (instance-data/instance-identity!
-               :document {:parse-json true}))]
-      (str/join "_" [region instance-id port]))))
+          (async/<! (instance-data/instance-identity!
+                      :document {:parse-json true}))]
+      (string/join "_" [region instance-id port]))))
 
 (defn topic-to-queue! [{:keys [topic-name creds] :as config}]
-  (println (str "topic-name: " topic-name))
-  (println (str "creds: " creds))
-  (println (str "config: " config))
+  (log/debug "topic-name:" topic-name)
+  (log/debug "creds:" creds)
+  (log/debug "config:" config)
   (go
-    (let [queue-name (<! (queue-name! config))]
+    (let [queue-name (async/<! (queue-name! config))]
       (-> (lambda/request!
             creds
             :topic-to-queue {
               :topic-name topic-name
               :queue-name queue-name})
-          <!
+          async/<!
           second))))
 
 (defn channel-websocket! [ws to-client from-client]

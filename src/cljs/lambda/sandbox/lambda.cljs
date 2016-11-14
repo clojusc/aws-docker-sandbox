@@ -1,10 +1,12 @@
 (ns sandbox.lambda
   (:require [cljs-lambda.util :refer [async-lambda-fn]]
             [cljs.core.async :as async :refer [<!]]
+            [eulalie.creds]
             [fink-nottle.sns :as sns]
             [fink-nottle.sqs :as sqs]
             [glossop.util]
-            [eulalie.creds])
+            [sandbox.creds]
+            [taoensso.timbre :as log])
   (:require-macros [cljs.core.async.macros :refer [go]]))
 
 (set! *main-cli-fn* identity)
@@ -20,7 +22,6 @@
      :condition {:arn-equals {:aws/source-arn topic-arn}}}]})
 
 (defn create-queue! [creds queue-name]
-  (println (str "Using creds: " creds))
   (go
     (let [queue-url (<! (sqs/create-queue! creds queue-name))
           queue-arn (<! (sqs/queue-arn! creds queue-url))]
@@ -29,9 +30,6 @@
        :queue-arn queue-arn})))
 
 (defn subscribe-queue! [creds {:keys [queue-url queue-arn]} topic-arn]
-  (println (str "Using creds: " creds))
-  (println (str "Using queue-url: " queue-url))
-  (println (str "Using queue-arn: " queue-arn))
   (go
     (<! (sqs/set-queue-attribute!
           creds queue-url :policy
@@ -44,11 +42,13 @@
 (def ^:export topic-to-queue
   (async-lambda-fn
    (fn [{:keys [topic-name queue-name]} context]
+     (log/with-level :debug
+       (log/debug "Context:" context))
      (go
-       (let [creds (merge (eulalie.creds/env) {:region "us-west-2"})
+       (let [;creds (sandbox.creds/load)
+             creds (eulalie.creds/env)
              topic-arn (<! (sns/create-topic! creds topic-name))
              {:keys [queue-url queue-arn] :as queue}
              (<! (create-queue! creds queue-name))]
-         (println (str "Using creds: " creds))
          (<! (subscribe-queue! creds queue topic-arn))
          {:topic-id topic-arn :queue-id queue-url})))))

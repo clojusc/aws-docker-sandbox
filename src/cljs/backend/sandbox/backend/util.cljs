@@ -10,6 +10,9 @@
 (defn now []
   (.getTime (js/Date.)))
 
+(defn iso []
+  (.toISOString (js/Date.)))
+
 (defn sighting-in [msg]
   (if (string? msg)
     (-> msg

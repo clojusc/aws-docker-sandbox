@@ -2,6 +2,7 @@
   (:require [cljs.core.async :as async :refer [<! >! close!]]
             [cljs.nodejs :as nodejs]
             [cljs.reader :refer [read-string]]
+            [clojure.string :as string]
             [eulalie.creds]
             [fink-nottle.sns :as sns]
             [fink-nottle.sqs.channeled :as sqs]
@@ -12,9 +13,11 @@
 
 (nodejs/enable-util-print!)
 
-(defonce http (nodejs/require "http"))
+;; XXX move into twig
+(defonce color (nodejs/require "colors"))
 (defonce express (nodejs/require "express"))
 (defonce express-ws (nodejs/require "express-ws"))
+(defonce http (nodejs/require "http"))
 
 (defn sns-push-loop! [creds topic-id sightings-in]
   (go
@@ -74,10 +77,52 @@
 (defn get-port [default]
   (or (aget js/process "env" "PORT") default))
 
+;; XXX move into twig
+(defn highlight-level [level]
+  (let [level-upper (string/upper-case (name level))]
+    (case level
+      :trace (.green color level-upper)
+      :debug (.bold color (.green color level-upper))
+      :info (.blue color level-upper)
+      :warn (.bold color (.yellow color level-upper))
+      :error (.red color level-upper)
+      :fatal (.bold color (.red color level-upper)))))
+
+;; XXX move into twig
+(defn log-formatter
+  "Custom, twig-like log output function.
+  Use`(partial log-formatter <opts-map>)` to modify default opts."
+  ([data]
+    (log-formatter nil data))
+  ([opts data] ; For partials
+   (let [{:keys [no-stacktrace? stacktrace-fonts]} opts
+         {:keys [level ?err #_vargs msg_ ?ns-str hostname_
+                 timestamp_ ?line]} data]
+     (str
+       (.green color (util/iso))
+       " "
+       (.green color "[pid:")
+       (.cyan color (str (aget js/process "pid")))
+       (.green color "]")
+       " "
+       (.bold color (.green color "["))
+       (highlight-level level)
+       (.bold color (.green color "]"))
+       " "
+       (.yellow color (str (or ?ns-str "?") ":" (or ?line "?")))
+       " "
+       (.green color
+         (str (force msg_)
+              (when-not no-stacktrace?
+                (when-let [err ?err]
+                  (str "\n" (stacktrace err opts))))))))))
+
 (defn -main [& [{:keys [port]
                  :or {port (get-port 8080)}}]]
-  ;; XXX set log level better later ... maybe integrate timbre into twig?
-  (log/set-level! :debug)
+  ;; XXX move into twig
+  (log/merge-config!
+    {:level :debug
+     :output-fn #'log-formatter})
   (let [channels {:sightings-out (async/chan)
                   :sightings-in (async/chan)
                   :recent (atom #queue [])}

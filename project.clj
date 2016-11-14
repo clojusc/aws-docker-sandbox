@@ -24,7 +24,8 @@
     {:dependencies
       [[source-map-support "0.2.8"]
        [express "4.13.1"]
-       [express-ws "0.2.6"]]}
+       [express-ws "0.2.6"]
+       [colors "1.1.2"]]}
   :resource-paths ["resources"]
   :clean-targets ^{:protect false}
     ["resources/public/js/out"

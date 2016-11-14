@@ -9,7 +9,7 @@
      [org.clojure/core.async "0.2.395"]
      [org.clojure/clojurescript "1.9.293"]
      [clojusc/env-ini "0.2.0-SNAPSHOT"]
-     [cljsjs/react "15.3.1-0"]
+     [cljsjs/react "15.3.1-1"]
      [reagent "0.6.0"]
      [reagent-forms "0.5.28"]
      [io.nervous/fink-nottle "0.4.6"]
@@ -17,7 +17,7 @@
      [io.nervous/cljs-nodejs-externs "0.2.0"]
      [jarohen/chord "0.7.0"]
      [com.taoensso/timbre "4.7.4"]
-     [cljsjs/moment "2.15.2-2"]]
+     [cljsjs/moment "2.15.2-3"]]
   :exclusions [[org.clojure/clojure]]
   :source-paths ["src/cljc"]
   :npm

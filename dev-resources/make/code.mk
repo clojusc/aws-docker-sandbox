@@ -23,6 +23,6 @@ clean-all: clean
 	rm -rf node_modules
 
 run:
-	node target/cljs/backend/chemtrack.js
+	node target/cljs/backend/aws_sandbox.js
 
 run-fresh: clean build lambda-deploy run

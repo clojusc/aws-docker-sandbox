@@ -29,7 +29,7 @@
   :resource-paths ["resources"]
   :clean-targets ^{:protect false}
     ["resources/public/js/out"
-     "resources/public/js/chemtrack.js"
+     "resources/public/js/aws_sandbox.js"
      "target"]
   :plugins
     [[lein-cljsbuild "1.1.4"]
@@ -48,7 +48,7 @@
       {:id "backend"
        :source-paths ["src/cljs/backend"]
        :compiler {
-         :output-to "target/cljs/backend/chemtrack.js"
+         :output-to "target/cljs/backend/aws_sandbox.js"
          :output-dir "target/cljs/backend"
          :optimizations :none
          :main "sandbox.backend"
@@ -58,13 +58,13 @@
        :figwheel true
        :compiler {
          :asset-path "js/out"
-         :output-to "resources/public/js/chemtrack.js"
+         :output-to "resources/public/js/aws_sandbox.js"
          :output-dir "resources/public/js/out"
          :optimizations :advanced}}
       {:id "lambda"
        :source-paths ["src/cljs/lambda"]
        :compiler
-         {:output-to "target/cljs/lambda/chemtrack.js"
+         {:output-to "target/cljs/lambda/aws_sandbox.js"
           :output-dir "target/cljs/lambda"
           :optimizations :advanced
           :target :nodejs}}]}

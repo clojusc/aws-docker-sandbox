@@ -6,25 +6,25 @@
 
 (defn elt [template [sym readable]]
   (t/substitute
-   {:chem/value sym :chem/name readable}
+   {:workflow/value sym :workflow/name readable}
    template))
 
 (defn form [sighting {:keys [elements sightings-out]}]
   (t/substitute
-   {:chem/elements (map (partial elt t/form-element) elements)
-    :chem/handler  (fn [& _]
+   {:workflow/elements (map (partial elt t/form-element) elements)
+    :workflow/handler  (fn [& _]
                      (async/put! sightings-out @sighting))}
    t/form))
 
 (defn sighting [{:keys [timestamp city elements]}]
   (t/substitute
-   {:chem/city city
-    :chem/timestamp timestamp
-    :chem.timestamp/formatted
+   {:workflow/city city
+    :workflow/timestamp timestamp
+    :workflow.timestamp/formatted
     (-> timestamp
         js/moment
         (.format "YYYY-MM-DD HH:mm"))
-    :chem/elements (map (fn [sym]
+    :workflow/elements (map (fn [sym]
                           (elt t/sighting-element
                                [sym (-> sym name str/capitalize)]))
                         elements)}
@@ -32,6 +32,6 @@
 
 (defn app [form-renderer {:keys [recent] :as deps}]
   (t/substitute
-   {:chem/sightings (map sighting (reverse @recent))
-    :chem/form      (form-renderer deps)}
+   {:workflow/sightings (map sighting (reverse @recent))
+    :workflow/form      (form-renderer deps)}
    t/app))

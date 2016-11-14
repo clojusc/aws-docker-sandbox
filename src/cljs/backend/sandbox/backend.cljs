@@ -134,7 +134,7 @@
     (register-routes app channels)
     (connect-channels!
      {:port port
-      :topic-name "chemtrail-sightings"
+      :topic-name "sandbox-workflow"
       :creds creds
       :max-recent 10}
      channels)

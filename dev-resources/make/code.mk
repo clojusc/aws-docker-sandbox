@@ -1,12 +1,28 @@
-build:
+build: build-standard build-frontend build-backend build-lambda
+
+build-standard:
 	lein compile
-	lein cljsbuild once
+
+build-frontend:
+	lein cljsbuild once frontend
+
+build-backend:
+	lein cljsbuild once backend
+
+build-lambda:
+	lein cljsbuild once lambda
 
 lambda-deploy:
 	lein cljs-lambda deploy
 
 clean:
-	rm -rf pom.xml* target
+	lein clean
+	rm -rf pom.xml*
+
+clean-all: clean
+	rm -rf node_modules
 
 run:
 	node target/cljs/backend/chemtrack.js
+
+run-fresh: clean build lambda-deploy run

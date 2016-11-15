@@ -9,7 +9,8 @@
      [org.clojure/core.async "0.2.395"]
      [org.clojure/clojurescript "1.9.293"]
      [clojusc/env-ini "0.2.0-SNAPSHOT"]
-     [clojusc/cljs-tools "0.1.0-SNAPSHOT"]
+     [clojusc/cljs-tools "0.1.0"]
+     [clojusc/twig "0.3.1-SNAPSHOT"]
      [cljsjs/react "15.3.1-1"]
      [reagent "0.6.0"]
      [reagent-forms "0.5.28"]
@@ -17,7 +18,6 @@
      [io.nervous/cljs-lambda "0.3.2"]
      [io.nervous/cljs-nodejs-externs "0.2.0"]
      [jarohen/chord "0.7.0"]
-     [com.taoensso/timbre "4.7.4"]
      [cljsjs/moment "2.15.2-3"]]
   :exclusions [[org.clojure/clojure]]
   :source-paths ["src/cljc"]
@@ -25,8 +25,7 @@
     {:dependencies
       [[source-map-support "0.2.8"]
        [express "4.13.1"]
-       [express-ws "0.2.6"]
-       [colors "1.1.2"]]}
+       [express-ws "0.2.6"]]}
   :resource-paths ["resources"]
   :clean-targets ^{:protect false}
     ["resources/public/js/out"
@@ -75,8 +74,8 @@
          "src/cljs/frontend"
          "src/cljs/backend"
          "src/cljs/lambda"]
-       :repl-options
-        {:nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}
-          :dependencies
-            [[com.cemerick/piggieback "0.2.1"]
-             [org.clojure/tools.nrepl "0.2.12"]]}})
+       :repl-options {
+         :nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}
+       :dependencies
+          [[com.cemerick/piggieback "0.2.1"]
+           [org.clojure/tools.nrepl "0.2.12"]]}})

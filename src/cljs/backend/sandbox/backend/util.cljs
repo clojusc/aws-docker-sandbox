@@ -2,7 +2,7 @@
   (:require [cljs.core.async :as async]
             [cljs.reader]
             [clojure.string :as string]
-            [clojusc.cljs-tools.core :as tools]
+            [clojusc.cljs-tools :as tools]
             [eulalie.instance-data :refer [instance-identity!]]
             [eulalie.lambda.util :as lambda]
             [taoensso.timbre :as log])

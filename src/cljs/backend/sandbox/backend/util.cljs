@@ -2,22 +2,17 @@
   (:require [cljs.core.async :as async]
             [cljs.reader]
             [clojure.string :as string]
-            [eulalie.instance-data :as instance-data]
+            [clojusc.cljs-tools.core :as tools]
+            [eulalie.instance-data :refer [instance-identity!]]
             [eulalie.lambda.util :as lambda]
             [taoensso.timbre :as log])
   (:require-macros [cljs.core.async.macros :refer [go]]))
-
-(defn now []
-  (.getTime (js/Date.)))
-
-(defn iso []
-  (.toISOString (js/Date.)))
 
 (defn sighting-in [msg]
   (if (string? msg)
     (-> msg
         cljs.reader/read-string
-        (assoc :timestamp (now)))
+        (assoc :timestamp (tools/now-epoch)))
     (do
       (log/errorf "Can't get sighting data from non-string message: %s" msg)
       {})))
@@ -26,9 +21,13 @@
 
 (defn queue-name! [{:keys [port]}]
   (go
-    (let [{:keys [instance-id region]}
-          (async/<! (instance-data/instance-identity!
-                      :document {:parse-json true}))]
+    (let [id-msg (instance-identity! :document {:parse-json true})
+          {:keys [instance-id region]} (async/<! id-msg)]
+      (log/debug "Port:" port)
+      (log/debug "ID message:" (tools/jsx->clj id-msg))
+      (log/debug "ID message object type:" (type id-msg))
+      (log/debug "Instance ID:" instance-id)
+      (log/debug "Region:" region)
       (string/join "_" [region instance-id port]))))
 
 (defn topic-to-queue! [{:keys [topic-name creds] :as config}]

@@ -45,8 +45,8 @@
      (log/with-level :debug
        (log/debug "Context:" context))
      (go
-       (let [;creds (sandbox.creds/load)
-             creds (eulalie.creds/env)
+       (let [creds (sandbox.creds/load)
+             ;creds (eulalie.creds/env)
              topic-arn (<! (sns/create-topic! creds topic-name))
              {:keys [queue-url queue-arn] :as queue}
              (<! (create-queue! creds queue-name))]

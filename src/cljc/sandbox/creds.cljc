@@ -48,6 +48,5 @@
          :secret-key (env-ini/get
                        cfg :aws-secret-access-key
                        profile :aws-secret-access-key)}
-        ;(get-region cfg profile {})
-        ;(get-output cfg profile {})
-        ))))
+        (get-region cfg profile {})
+        (get-output cfg profile {})))))

@@ -2,6 +2,7 @@
   (:require [cljs.core.async :as async :refer [<! >! close!]]
             [cljs.nodejs :as nodejs]
             [cljs.reader :refer [read-string]]
+            [clojusc.cljs-tools.core :as tools]
             [clojure.string :as string]
             [eulalie.creds]
             [fink-nottle.sns :as sns]
@@ -30,7 +31,7 @@
   [{:keys [max-recent recent deletes]}
    {:keys [body] :as message} results]
   (when-not body
-    (log/error "Body undefined; got message:" message))
+    (log/error "Body undefined! Got message data:" message))
   (let [body (read-string body)]
     (swap! recent util/conj+evict body max-recent)
     (go
@@ -99,7 +100,7 @@
          {:keys [level ?err #_vargs msg_ ?ns-str hostname_
                  timestamp_ ?line]} data]
      (str
-       (.green color (util/iso))
+       (.green color (tools/now-iso))
        " "
        (.green color "[pid:")
        (.cyan color (str (aget js/process "pid")))
@@ -115,7 +116,7 @@
          (str (force msg_)
               (when-not no-stacktrace?
                 (when-let [err ?err]
-                  (str "\n" (stacktrace err opts))))))))))
+                  (str "\n" (log/stacktrace err opts))))))))))
 
 (defn -main [& [{:keys [port]
                  :or {port (get-port 8080)}}]]
@@ -128,8 +129,9 @@
                   :recent (atom #queue [])}
         app (express)
         server (make-server app)
-        ;creds (sandbox.creds/load)
-        creds (eulalie.creds/env)]
+        creds (sandbox.creds/load)
+        ;creds (eulalie.creds/env)
+        ]
     (log/debug (str "Using creds: " creds))
     (register-routes app channels)
     (connect-channels!

@@ -1,7 +1,7 @@
 build: build-standard build-frontend build-backend build-lambda
 
 build-standard:
-	lein compile
+	lein with-profile +dev compile
 
 build-frontend:
 	lein cljsbuild once frontend

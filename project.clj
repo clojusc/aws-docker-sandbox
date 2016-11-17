@@ -9,7 +9,7 @@
      [org.clojure/core.async "0.2.395"]
      [org.clojure/clojurescript "1.9.293"]
      [clojusc/env-ini "0.2.0-SNAPSHOT"]
-     [clojusc/cljs-tools "0.1.0"]
+     [clojusc/cljs-tools "0.1.1"]
      [clojusc/twig "0.3.1-SNAPSHOT"]
      [cljsjs/react "15.3.1-1"]
      [reagent "0.6.0"]

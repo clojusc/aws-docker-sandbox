@@ -24,8 +24,6 @@
     (let [id-msg (instance-identity! :document {:parse-json true})
           {:keys [instance-id region]} (async/<! id-msg)]
       (log/debug "Port:" port)
-      (log/debug "ID message:" (tools/jsx->clj id-msg))
-      (log/debug "ID message object type:" (type id-msg))
       (log/debug "Instance ID:" instance-id)
       (log/debug "Region:" region)
       (string/join "_" [region instance-id port]))))
